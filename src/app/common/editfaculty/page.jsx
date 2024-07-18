@@ -94,10 +94,34 @@ const EditFacultyPopup = ({ isOpen, onClose, facultyDetails, data }) => {
         );
         setDropdowns(updatedDropdowns);
     };
+    const calculateOverallRates = () => {
+        let totalStudents = 0;
+        let totalPassed = 0;
+        let totalFailed = 0;
+    
+        dropdowns.forEach(dropdown => {
+            const total = parseInt(dropdown.totalStudents);
+            const passed = parseInt(dropdown.passStudents);
+            const failed = parseInt(dropdown.failStudents);
+    
+            totalStudents += total;
+            totalPassed += passed;
+            totalFailed += failed;
+    
+            const passRate = ((passed / total) * 100).toFixed(2);
+            dropdown.rate = passRate;
+        });
+    
+        const overallPassRate = ((totalPassed / totalStudents) * 100).toFixed(2);
+        const overallFailRate = ((totalFailed / totalStudents) * 100).toFixed(2);
+        const overallRating = (overallPassRate - overallFailRate).toFixed(2);
+
+        return { overallPassRate, overallFailRate, overallRating };
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        const { overallPassRate, overallFailRate, overallRating } = calculateOverallRates();
         // Validate inputs
         const isValid = dropdowns.every(dropdown =>
             parseInt(dropdown.totalStudents) === (parseInt(dropdown.passStudents) + parseInt(dropdown.failStudents))
@@ -125,9 +149,9 @@ const EditFacultyPopup = ({ isOpen, onClose, facultyDetails, data }) => {
             isActive: data.isActive,
             studentsTaught: data.studentsTaught,
             subjectsCount: data.subjectsCount,
-            passRate: data.passRate,
-            failRate: data.failRate,
-            rating: data.rating,
+            passRate: overallPassRate,
+            failRate: overallFailRate,
+            rating: overallRating,
             status: data.status,
             attendance: data.attendance,
             subjects: dropdowns.map((dropdown) => {

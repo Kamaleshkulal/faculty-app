@@ -12,7 +12,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const FacultyHomePage = ({ projectNameStatus, presentationStatus, demoStatus = false, successStatus }) => {
     const percentage1 = 75;
-    const percentage3 = 90;
+    // const percentage3 = 90;
     const [subjects, setSubjects] = useState([]);
     const [data, setData] = useState(null);
     const [facultyId, setFacultyId] = useState(null);
@@ -273,8 +273,8 @@ const FacultyHomePage = ({ projectNameStatus, presentationStatus, demoStatus = f
                                         <div className='bg-blue-600 shadow-lg h-32 rounded-lg p-4 m-2 w-1/3 flex flex-col items-center'>
                                             <h2 className=' font-bold uppercase text-md'>Rating</h2>
                                             <CircularProgressbar
-                                                value={percentage3}
-                                                text={`${percentage3}%`}
+                                                value={data?.rating || '90'}
+                                                text={`${data?.rating}%`}
                                                 styles={buildStyles({
                                                     textColor: "black",
                                                     pathColor: "black",
